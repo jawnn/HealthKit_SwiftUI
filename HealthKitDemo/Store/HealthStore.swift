@@ -119,6 +119,10 @@ class HealthStore {
     }
     
     func fetchRings() {
+        guard let healthStore = self.healthStore else {
+            return
+        }
+
         let start = Date().startOfDay()
         
         let predicate = HKQuery.predicateForSamples(withStart: start, end: .now, options: .strictStartDate)
@@ -151,11 +155,14 @@ class HealthStore {
             }
         }
         
-        healthStore!.execute(query)
+        healthStore.execute(query)
     }
     
     func fetchStepCount() {
-        
+        guard let healthStore = self.healthStore else {
+            return
+        }
+
         let start = Date().startOfDay()
         let end = Date().endOfDay()
         
@@ -195,11 +202,15 @@ class HealthStore {
             self.distance = distance
         }
         
-        self.healthStore!.execute(stepsQuery)
-        self.healthStore!.execute(distanceQuery)
+        healthStore.execute(stepsQuery)
+        healthStore.execute(distanceQuery)
     }
     
     func fetchWorkoutData() {
+        guard let healthStore = self.healthStore else {
+            return
+        }
+
         let calendar = Calendar.current
         let startDateComponents = DateComponents(year: 2024, month: 1, day: 1)
         let endDateComponents = DateComponents(year: 2024, month: 12, day: 31)
@@ -302,7 +313,7 @@ class HealthStore {
                 completion(nil, error)
             }
         }
-        healthStore!.execute(heartRateQuery)
+        healthStore.execute(heartRateQuery)
     }
     
     func sortWorkout(by filterTerm: SortFilter) {
