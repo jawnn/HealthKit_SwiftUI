@@ -11,7 +11,6 @@ struct FullWorkoutHistory: View {
     let workouts: [Workout]
     
     var sortedWorkouts: [Date: [Workout]] = [:]
-    var dateKeys: [Date] = []
     
     init(workouts: [Workout]) {
         self.workouts = workouts

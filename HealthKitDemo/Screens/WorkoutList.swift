@@ -68,7 +68,7 @@ struct WorkoutList: View {
                     .headerProminence(.increased)
                     
                     Section {
-                        ForEach(healthStore.weeklyWorkouts) { workout in
+                        ForEach(healthStore.monthlyWorkouts) { workout in
                             NavigationLink {
                                 WorkoutDetail(workout: workout)
                             } label: {
@@ -77,7 +77,7 @@ struct WorkoutList: View {
                         }
                     } header: {
                         HStack {
-                            Text("Monthly History")
+                            Text("Monthly History (\(self.healthStore.monthlyWorkouts.count))")
                             Spacer()
                             
                             NavigationLink {

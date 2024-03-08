@@ -62,7 +62,7 @@ class HealthStore {
     var steps: Int = 0
     var distance: Double = 0.0
     var workouts: [Workout] = []
-    var weeklyWorkouts: [Workout] = []
+    var monthlyWorkouts: [Workout] = []
     var workoutsToEnter: [HKWorkout] = []
     
     var isLoading: Bool = true
@@ -258,13 +258,17 @@ class HealthStore {
             self.workouts = x
             
             var y = fetched.sorted(by: {$0.startDate > $1.startDate})
-            self.weeklyWorkouts = y.filter({ $0.startDate.isInCurrentMonth() })
+            self.monthlyWorkouts = y.filter({ $0.startDate.isInCurrentMonth() })
         }
         
-        self.healthStore!.execute(query)
+        healthStore.execute(query)
     }
     
     func getHeartRate(from start: Date, to end: Date, completion: @escaping (Double?, Error?) -> Void) {
+        guard let healthStore = self.healthStore else {
+            return
+        }
+
         let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictEndDate)
         
         let heartRateQuery = HKStatisticsCollectionQuery(quantityType: HKQuantityType(.heartRate), quantitySamplePredicate: predicate, options: .discreteAverage, anchorDate: start, intervalComponents: DateComponents(minute: 1))
